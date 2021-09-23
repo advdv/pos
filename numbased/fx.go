@@ -2,12 +2,32 @@ package pos
 
 import (
 	"math/big"
+	"strconv"
 )
 
-// F1 performs a ChaCha8 cipher of the provided x value
-func F1(params *Params, x Num) Num {
-	ciphered := readChaCha(params, x)                      // ChaCha8(...)
-	return Concat(ciphered, Slice(x, 0, uint(params.ext))) // || x[:param_ext]
+// Fx composes A with C
+func Fx(params *Params, xs ...Num) Num {
+	switch len(xs) {
+	case 1: // f1(x)
+		return Aprime(params, xs[0])
+	case 2:
+		fallthrough
+	case 4:
+		fallthrough
+	case 8:
+		fallthrough
+	case 16:
+		fallthrough
+	case 32:
+		fallthrough
+	default:
+		panic("pos: fx called with unexpected nr of x-values: " + strconv.Itoa(len(xs)))
+	}
+}
+
+// Aprime performs a ChaCha8 cipher of the provided x value
+func Aprime(params *Params, x Num) Num {
+	return Concat(readChaCha(params, x), Slice(x, 0, uint(params.ext))) // ChaCha8 || x[:param_ext]
 }
 
 // readChaCha peforms the chacha byte reading

@@ -21,5 +21,9 @@ func TestNumberPrinting(t *testing.T) {
 
 func TestUint64(t *testing.T) {
 	require.Equal(t, uint64(12), Num64(12, 64).Uint64())
-	require.Panics(t, func() { Num64(2, 1).Uint64() }) // domain too small
+	require.Panics(t, func() {
+		n1 := Num64(1, 1)
+		n1.z = 65
+		n1.Uint64()
+	}) // domain too small
 }
