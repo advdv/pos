@@ -11,3 +11,7 @@ func TestBlake3(t *testing.T) {
 	require.Equal(t, byte(0x48), s1[0])
 	require.Equal(t, byte(0xfc), s1[1])
 }
+
+func TestA(t *testing.T) {
+
+}

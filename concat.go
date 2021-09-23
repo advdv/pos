@@ -11,3 +11,12 @@ func Concat(z uint, xs ...*big.Int) (res *big.Int) {
 	}
 	return res
 }
+
+// Concat64 takes 64bit x-values as argument
+func Concat64(z uint, xs ...uint64) *big.Int {
+	bxs := make([]*big.Int, len(xs))
+	for i, x := range xs {
+		bxs[i] = new(big.Int).SetUint64(x)
+	}
+	return Concat(z, bxs...)
+}
