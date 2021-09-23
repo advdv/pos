@@ -47,3 +47,12 @@ func (num Num) Format(f fmt.State, verb rune) {
 
 // Domain returns the implied domain of this number
 func (num Num) Domain() uint { return num.z }
+
+// Uint64 returns the num as a uint64 but panics if the implied domain is larger then 64 bits
+func (num Num) Uint64() uint64 {
+	if num.Domain() > 64 {
+		panic("pos: number's implied domain to large for uint64, got: " + strconv.Itoa(int(num.Domain())))
+	}
+
+	return num.Int.Uint64()
+}
