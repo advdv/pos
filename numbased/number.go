@@ -44,3 +44,6 @@ func (num Num) Format(f fmt.State, verb rune) {
 	}
 	fmt.Fprintf(f, "errb%0"+strconv.Itoa(int(num.z))+"b", num.Int)
 }
+
+// Domain returns the implied domain of this number
+func (num Num) Domain() uint { return num.z }
