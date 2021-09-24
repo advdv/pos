@@ -8,6 +8,7 @@ type Params struct {
 	b, c  uint64
 	bc    uint64
 	pseed [32]byte
+	fsize uint64
 }
 
 // NewParams inits a new set of parameters
@@ -24,5 +25,6 @@ func NewParams(k uint, pseed ...[32]byte) (p *Params) {
 
 	p.bc = p.b * p.c
 	p.m = 1 << p.ext
+	p.fsize = uint64(p.k) + p.ext
 	return
 }

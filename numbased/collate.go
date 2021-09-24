@@ -2,8 +2,8 @@ package pos
 
 import "strconv"
 
-// Collate the xs values
-func Collate(params *Params, xs ...Num) Num {
+// C the xs values
+func C(params *Params, xs ...Num) Num {
 	switch len(xs) {
 	case 1, 2, 4:
 		return Concat(xs...)

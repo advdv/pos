@@ -1,7 +1,9 @@
 package pos
 
 import (
+	"encoding/hex"
 	"fmt"
+	"math/big"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -26,4 +28,21 @@ func TestUint64(t *testing.T) {
 		n1.z = 65
 		n1.Uint64()
 	}) // domain too small
+}
+
+func TestToBytes(t *testing.T) {
+	nb, _ := hex.DecodeString("3e34e1208a3d4c8cda9c")
+	n := new(big.Int)
+	n.SetBytes(nb)
+	num := NewNum(n, 81)
+
+	// input as measured in the reference implementation
+	require.Equal(t, "081b000111110001101001110000100100000100010100011110101001100100011001101101010011100", fmt.Sprint(num))
+
+	// refb is the byte representation of the input into blake3 as observed by the reference implementation
+	refb, _ := hex.DecodeString("1f1a7090451ea6466d4e006d01000000c067c90201800b6d48388d0f00000000b8e4166d01000000f9698d0f00000000a0e4166d0100000020e5166d01000000")
+
+	var inputBytes [64]byte
+	num.ToBlakeBytes(inputBytes[:])
+	require.Equal(t, refb[:11], inputBytes[:11])
 }

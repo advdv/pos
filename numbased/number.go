@@ -56,3 +56,13 @@ func (num Num) Uint64() uint64 {
 
 	return num.Int.Uint64()
 }
+
+// ToBlake bytes implements the perculiar conversion to bytes before the number is fed to the
+// blake hasher. It reads all the bits in the implied domain and sets them on 'b' in reverse order.
+func (num Num) ToBlakeBytes(b []byte) {
+	for i, j := int(num.z)-1, 0; i >= 0; i-- {
+		cell, pos := j/8, j%8
+		b[cell] |= byte(num.Bit(i) << (7 - pos))
+		j++
+	}
+}

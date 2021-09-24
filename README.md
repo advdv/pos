@@ -20,6 +20,8 @@ Proof of space implementation
 ## Ideas
 
 - Use Avalanche or Staking graph mechanics to prevent double dipping on multiple chains
+- Proof of work determines speed, but it's not a race
+- Slowly reduce the value of plots, like real mining: this way it can ge counted as "weight" being put on the longest chain. So the same plots cannot be re-used infinitely to create longest chain? Other can simply, temporarily blacklist certain plotseeds.
 
 ### 7 Tables
 
