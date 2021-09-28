@@ -1,7 +1,10 @@
 package pos
 
 import (
+	"bufio"
+	"embed"
 	"math/big"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -51,4 +54,26 @@ func TestFailVerifyChallenge(t *testing.T) {
 	require.NoError(t, err)
 
 	require.False(t, Verify(params, proof, chall))
+}
+
+//go:embed test_proofs.txt
+var testProofs embed.FS
+
+func TestBatchProofValidation(t *testing.T) {
+	params := NewParams(25, [32]byte{0x01, 0x02, 0x2f, 0xb4, 0x2c, 0x08, 0xc1, 0x2d, 0xe3, 0xa6, 0xaf, 0x05, 0x38, 0x80, 0x19, 0x98, 0x06, 0x53, 0x2e, 0x79, 0x51, 0x5f, 0x94, 0xe8, 0x34, 0x61, 0x61, 0x21, 0x01, 0xf9, 0x41, 0x2f})
+
+	f, err := testProofs.Open("test_proofs.txt")
+	require.NoError(t, err)
+
+	scan := bufio.NewScanner(f)
+	for scan.Scan() {
+		parts := strings.SplitN(scan.Text(), ":", 2)
+
+		proof, err := ProofFromHex(parts[1], params.k)
+		require.NoError(t, err)
+		chall, err := ChallengeFromHex(parts[0])
+		require.NoError(t, err)
+
+		require.True(t, Verify(params, proof, chall))
+	}
 }
