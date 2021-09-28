@@ -20,21 +20,38 @@ func Fx(params *Params, xs ...Num) Num {
 	case 4: // f3(x1, x2, x3, x4)
 		return Trunc(
 			A(
-				C(params, xs[0], xs[1]),
-				C(params, xs[2], xs[3]),
-				Fx(params, xs[0], xs[1])),
+				C(params, xs[:2]...),
+				C(params, xs[2:]...),
+				Fx(params, xs[:2]...)),
 			uint(params.fsize))
 	case 8: // f4(x1, ... x8)
 		return Trunc(
 			A(
-				C(params, xs[0], xs[1], xs[2], xs[3]),
-				C(params, xs[4], xs[5], xs[6], xs[7]),
-				Fx(params, xs[0], xs[1], xs[2], xs[3])),
+				C(params, xs[:4]...),
+				C(params, xs[4:]...),
+				Fx(params, xs[:4]...)),
 			uint(params.fsize))
 	case 16:
-		fallthrough
+		return Trunc(
+			A(
+				C(params, xs[:8]...),
+				C(params, xs[8:]...),
+				Fx(params, xs[:8]...)),
+			uint(params.fsize))
 	case 32:
-		fallthrough
+		return Trunc(
+			A(
+				C(params, xs[:16]...),
+				C(params, xs[16:]...),
+				Fx(params, xs[:16]...)),
+			uint(params.fsize))
+	case 64:
+		return Trunc(
+			A(
+				C(params, xs[:32]...),
+				C(params, xs[32:]...),
+				Fx(params, xs[:32]...)),
+			uint(params.fsize))
 	default:
 		panic("pos: fx called with unexpected nr of x-values: " + strconv.Itoa(len(xs)))
 	}
