@@ -5,9 +5,20 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"math/big"
 
 	"github.com/32bitkid/bitreader"
 )
+
+// ChallengeFromHex decodes the challenge from an hex encoded string
+func ChallengeFromHex(s string) (c Num, err error) {
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		return c, fmt.Errorf("failed to decode challenge from hex: %w", err)
+	}
+
+	return NewNum(new(big.Int).SetBytes(b), 256), nil
+}
 
 // Proof holds the 64 x-values
 type Proof [64]Num
@@ -37,7 +48,7 @@ func ProofFromHex(s string, k uint) (p Proof, err error) {
 }
 
 // Verify proof 'p'
-func Verify(params *Params, p Proof) (ok bool) {
+func Verify(params *Params, p Proof, c Num) (ok bool) {
 	ys := make([]Num, 0, 64)
 	for i := 0; i < 64; i++ {
 		ys = append(ys, Fx(params, p[i])) // f1 values
@@ -61,5 +72,6 @@ func Verify(params *Params, p Proof) (ok bool) {
 		ys = newys
 	}
 
-	return true // all x-values match, verificate succeeded
+	// finally, check if the result of f1 equals the challenge
+	return Trunc(ys[0], params.k).Uint64() == Trunc(c, params.k).Uint64()
 }
