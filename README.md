@@ -32,6 +32,7 @@ Proof of space implementation
 - iota vdf economic analysis: https://arxiv.org/pdf/2006.01977.pdf
 - Avalanche polling style consensus, together with proof of storage for sybil, and proof of retrievability to facilitate
   replication of data.
+- IDEA: Use VRF to place each plot/identity in a slot so not all nodes will broadcast block at the same time.
 
 NOTE: The sampling, or iotas continues dag is suitable for PoS because there is no build-in time element.
 PROBLEM: What happens if no-one is able to propose a block because no PoS satisfies the difficulty, if so
