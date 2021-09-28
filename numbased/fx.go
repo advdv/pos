@@ -8,7 +8,7 @@ import (
 // Fx composes A with C
 func Fx(params *Params, xs ...Num) Num {
 	switch len(xs) {
-	case 1: // f1(x1,x2)
+	case 1: // f1(x1)
 		return Aprime(params, xs[0])
 	case 2: // f2(x1,x2)
 		return Trunc(
@@ -17,10 +17,20 @@ func Fx(params *Params, xs ...Num) Num {
 				C(params, xs[1]),
 				Fx(params, xs[0])),
 			uint(params.fsize))
-	case 4:
-		fallthrough
-	case 8:
-		fallthrough
+	case 4: // f3(x1, x2, x3, x4)
+		return Trunc(
+			A(
+				C(params, xs[0], xs[1]),
+				C(params, xs[2], xs[3]),
+				Fx(params, xs[0], xs[1])),
+			uint(params.fsize))
+	case 8: // f4(x1, ... x8)
+		return Trunc(
+			A(
+				C(params, xs[0], xs[1], xs[2], xs[3]),
+				C(params, xs[4], xs[5], xs[6], xs[7]),
+				Fx(params, xs[0], xs[1], xs[2], xs[3])),
+			uint(params.fsize))
 	case 16:
 		fallthrough
 	case 32:

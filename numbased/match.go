@@ -33,7 +33,8 @@ func FindMatches(params *Params, bucket_L, bucket_R []uint64) (idx_count int) {
 
 			r_target := params.l_targets[parity][r][i]
 			for j := 0; j < rmap[r_target].count; j++ {
-				// @TODO handle registering the found matches if it's more then just the check
+				// @TODO handle registering the found matches if it's more then just the check by returning
+				// indices into bucket_L and bucket_R
 				idx_count++
 			}
 		}
