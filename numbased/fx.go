@@ -32,7 +32,7 @@ func Fx(params *Params, xs ...Num) Num {
 
 // Aprime performs a ChaCha8 cipher of the provided x value
 func Aprime(params *Params, x Num) Num {
-	return Concat(readChaCha(params, x), Slice(x, 0, uint(params.ext))) // ChaCha8 || x[:param_ext]
+	return Concat(readChaCha(params, x), Slice(x, 0, param_ext)) // ChaCha8 || x[:param_ext]
 }
 
 // readChaCha peforms the chacha byte reading

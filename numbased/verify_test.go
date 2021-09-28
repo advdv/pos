@@ -14,4 +14,8 @@ func TestProofFromBytes(t *testing.T) {
 	// x1, x2 double checked with reference implementation
 	require.Equal(t, uint64(0b0010001010001111010100110), proof[0].Uint64())
 	require.Equal(t, uint64(0b0100011001101101010011100), proof[1].Uint64())
+
+	// x3, x4 double check with reference
+	require.Equal(t, uint64(0b0000010111100111100011101), proof[2].Uint64())
+	require.Equal(t, uint64(0b0100101101111111011110101), proof[3].Uint64())
 }

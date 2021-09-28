@@ -2,6 +2,7 @@ package pos
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -44,4 +45,18 @@ func TestF2(t *testing.T) {
 
 	f2y1 := Fx(params, proof[0], proof[1]) // f2(x1, x2)
 	require.Equal(t, "031b0000100101011011000000001110011", fmt.Sprint(f2y1))
+}
+
+func TestDivMod(t *testing.T) {
+	for i, c := range []struct{ num, den, quo, rem uint64 }{
+		{8, 3, 2, 2},
+		{3, 8, 0, 3},
+		{5, 5, 1, 0},
+	} {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			quo, rem := divmod(c.num, c.den)
+			require.Equal(t, c.quo, quo)
+			require.Equal(t, c.rem, rem)
+		})
+	}
 }

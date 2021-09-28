@@ -16,12 +16,26 @@ Proof of space implementation
 ## Backlog
 
 - [ ] Move everyting to a single "PoS" struct that just has the params as a field
+- [ ] Remove snake case notations for variables around findMatches to make it more idiomatic once we're sure the implementation is correct
 
 ## Ideas
 
 - Use Avalanche or Staking graph mechanics to prevent double dipping on multiple chains
 - Proof of work determines speed, but it's not a race
-- Slowly reduce the value of plots, like real mining: this way it can ge counted as "weight" being put on the longest chain. So the same plots cannot be re-used infinitely to create longest chain? Other can simply, temporarily blacklist certain plotseeds.
+- Slowly reduce the value of plots, like real mining: this way it can ge counted as "weight" being put on the longest chain. So the same plots cannot be re-used infinitely to create longest chain? Other can simply, temporarily blacklist certain plotseeds. Would this turning "mining" really into farming if plots can "grow" back to be usuable again.
+- What if we say that the input to a plot_seed needs to be the result of a vdf to further prevent plot "mining" as blocks come out.
+- Solve nothing-at-stake problem by buying a call option that expires in the future. Such that they need to bed on th efuture of the coin
+- Avalanche as nog block reward and so no issue with "nothing t stake"?: https://forum.avax.network/t/no-slashing-on-misbehaviour/179/6
+- Use network sampling to add "weight" to a certain chain that cannot be reversed?
+- Like casper, we punish the node that create an orphaned block. by banning a plot seeds?
+- iota adaptive rate control using collateral: Achieving Fairness in the Tangle through an Adaptive Rate Control Algorithm
+- iota vdf economic analysis: https://arxiv.org/pdf/2006.01977.pdf
+- Avalanche polling style consensus, together with proof of storage for sybil, and proof of retrievability to facilitate
+  replication of data.
+
+NOTE: The sampling, or iotas continues dag is suitable for PoS because there is no build-in time element.
+PROBLEM: What happens if no-one is able to propose a block because no PoS satisfies the difficulty, if so
+how to prevent re-try span (effectively mining)
 
 ### 7 Tables
 
