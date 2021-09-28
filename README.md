@@ -17,6 +17,7 @@ Proof of space implementation
 
 - [ ] Move everyting to a single "PoS" struct that just has the params as a field
 - [ ] Remove snake case notations for variables around findMatches to make it more idiomatic once we're sure the implementation is correct
+- [ ] Implement retrieval of quality string, seemed to be retured from verify function
 
 ## Ideas
 

@@ -1,22 +1,36 @@
 package pos
 
-import (
-	"math/big"
-	"strconv"
-)
+import "strconv"
 
-// Collate is a collation function. Returns 2^bk for b=colla_size(t). Xs are provided in lists of
-// 1, 2, 4, 8, 16 or 32 length
-func Collate(params *Params, xs ...uint64) *big.Int {
+// C collates the xs values
+func C(params *Params, xs ...Num) Num {
 	switch len(xs) {
 	case 1, 2, 4:
-		return Concat64(uint(params.K()), xs...)
+		return Concat(xs...)
 	case 8:
-		panic("pos: not implemented: 8")
+		return Slice(
+			A(
+				C(params, xs[:4]...),
+				C(params, xs[4:]...),
+				Fx(params, xs[:4]...),
+			),
+			uint(params.fsize), uint(params.fsize)+(4*params.k))
 	case 16:
-		panic("pos: not implemented: 16")
+		return Slice(
+			A(
+				C(params, xs[:8]...),
+				C(params, xs[8:]...),
+				Fx(params, xs[:8]...),
+			),
+			uint(params.fsize), uint(params.fsize)+(3*params.k))
 	case 32:
-		panic("pos: not implemented: 32")
+		return Slice(
+			A(
+				C(params, xs[:16]...),
+				C(params, xs[16:]...),
+				Fx(params, xs[:16]...),
+			),
+			uint(params.fsize), uint(params.fsize)+(2*params.k))
 	default:
 		panic("pos: collate called with unexpected nr of x-values: " + strconv.Itoa(len(xs)))
 	}

@@ -7,8 +7,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSmallXCollate(t *testing.T) {
-	params := NewParams(25, [32]byte{})
-	require.Equal(t, "1000000000000000000000001000000000000000000000000110000000000000000000000100",
-		fmt.Sprintf("%b", Collate(params, 1, 2, 3, 4)))
+func TestCollate(t *testing.T) {
+	params := NewParams(4)
+	require.Panics(t, func() { C(params) }) // unsupported number of xs: 0
+
+	xs := []Num{Num64(1, params.k), Num64(2, params.k), Num64(3, params.k), Num64(4, params.k)}
+	collated := C(params, xs...)
+
+	require.Equal(t, "016b0001001000110100", fmt.Sprint(collated))
+	require.Equal(t, uint(int(params.k)*len(xs)), collated.Domain())
 }

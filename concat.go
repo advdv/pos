@@ -2,21 +2,12 @@ package pos
 
 import "math/big"
 
-// Concat implements zero-padding concatenation for domain z. NOTE: i'm assuming that the zero-padding only
-// applies to all elements except the first, where extra zeros are always ignored
-func Concat(z uint, xs ...*big.Int) (res *big.Int) {
-	res = new(big.Int)
-	for _, x := range xs {
-		res.Lsh(res, uint(z)).Add(x, res)
+// Concat numbers with a domain, the returned number is of the implied domain of all three numbers combined
+func Concat(nums ...Num) Num {
+	res, z := new(big.Int), uint(0)
+	for _, n := range nums {
+		z += n.z
+		res.Lsh(res, uint(n.z)).Add(n.Int, res)
 	}
-	return res
-}
-
-// Concat64 takes 64bit x-values as argument
-func Concat64(z uint, xs ...uint64) *big.Int {
-	bxs := make([]*big.Int, len(xs))
-	for i, x := range xs {
-		bxs[i] = new(big.Int).SetUint64(x)
-	}
-	return Concat(z, bxs...)
+	return NewNum(res, z)
 }
